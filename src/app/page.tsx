@@ -1,7 +1,7 @@
 import Link from "next/link";
+import Hero from "@/components/Hero"; // Hero component import kiya
 
 export default function Home() {
-  // Yeh aapki services ki list hai. Ise hum easily future me badha sakte hain.
   const services = [
     { title: "Loans", desc: "Personal, Business, & Mortgage Loans", icon: "💰", link: "/services/loan" },
     { title: "Insurance", desc: "Health, Life, & Motor Insurance", icon: "🛡️", link: "/services/insurance" },
@@ -14,21 +14,8 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       
-      {/* Hero Section - First Impression */}
-      <section className="bg-blue-600 text-white py-20 px-4 text-center shadow-inner">
-        <h1 className="text-4xl md:text-6xl font-extrabold mb-6 tracking-tight">
-          Welcome to <span className="text-yellow-300">Vyapar Setu</span>
-        </h1>
-        <p className="text-lg md:text-xl mb-10 max-w-2xl mx-auto text-blue-100 font-medium">
-          Aapke Cyber Cafe aur Customers ke liye ek-matra platform. Loans, GST, ITR aur sabhi digital suvidhayein ab ek hi jagah.
-        </p>
-        <Link 
-          href="#services-section" 
-          className="bg-white text-blue-700 px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition shadow-xl inline-block"
-        >
-          Explore Services
-        </Link>
-      </section>
+      {/* External Hero Component render hoga */}
+      <Hero />
 
       {/* Services Grid Section */}
       <section id="services-section" className="py-20 px-4 max-w-7xl mx-auto w-full">
@@ -50,8 +37,7 @@ export default function Home() {
                 href={service.link} 
                 className="text-blue-600 font-bold hover:text-blue-800 flex items-center gap-2"
               >
-                Apply Now 
-                <span className="text-xl">→</span>
+                Apply Now <span className="text-xl">→</span>
               </Link>
             </div>
           ))}
