@@ -1,46 +1,61 @@
-import DynamicForm from "@/components/DynamicForm";
 import { notFound } from "next/navigation";
+import LoanForm from "@/components/forms/LoanForm";
+import GstForm from "@/components/forms/GstForm";
+import InsuranceForm from "@/components/forms/InsuranceForm";
+import ItrForm from "@/components/forms/ItrForm";
+import PropertyForm from "@/components/forms/PropertyForm";
+import OtherForm from "@/components/forms/OtherForm";
 
-// Yeh function URL se category ka naam nikalega (jaise 'loan' ya 'gst')
 export default async function ServicePage({ params }: { params: Promise<{ category: string }> }) {
   const resolvedParams = await params;
   const categorySlug = resolvedParams.category.toLowerCase();
 
-  // Validate karein ki user sahi service par hai
   const allowedCategories = ["loan", "insurance", "gst", "itr", "property", "other"];
-  
   if (!allowedCategories.includes(categorySlug)) {
-    return notFound(); // Agar koi galat URL daalega toh 404 page dikhega
+    return notFound(); 
   }
 
-  // URL wale naam ko thoda sundar banate hain heading ke liye
+  // Yahan humne saare components connect kar diye hain!
+  let FormComponent;
+  switch (categorySlug) {
+    case "loan":
+      FormComponent = LoanForm;
+      break;
+    case "gst":
+      FormComponent = GstForm;
+      break;
+    case "insurance":
+      FormComponent = InsuranceForm;
+      break;
+    case "itr":
+      FormComponent = ItrForm;
+      break;
+    case "property":
+      FormComponent = PropertyForm;
+      break;
+    case "other":
+      FormComponent = OtherForm;
+      break;
+    default:
+      FormComponent = OtherForm;
+  }
+
   const displayTitle = categorySlug.toUpperCase();
-  
-  // Form component ke liye category format set karein
-  let formCategory: "Loan" | "GST" | "ITR" | "Other" = "Other";
-  if (categorySlug === "loan") formCategory = "Loan";
-  if (categorySlug === "gst") formCategory = "GST";
-  if (categorySlug === "itr") formCategory = "ITR";
 
   return (
-    <div className="min-h-screen bg-blue-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        
-        {/* Page Header */}
         <div className="text-center mb-10">
           <h1 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-4 tracking-tight">
             Apply for <span className="text-blue-600">{displayTitle}</span> Services
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Neeche di gayi details ko sahi se bharein aur apne documents upload karein. Humari team jald hi process shuru karegi.
+            Neeche di gayi details ko sahi se bharein. Humari team jald hi process shuru karegi.
           </p>
         </div>
         
-        {/* Humara Master Form Yahan Render Hoga */}
-        <DynamicForm 
-          serviceName={`${displayTitle} Application`} 
-          category={formCategory} 
-        />
+        {/* Jo category URL me hogi, wahi form yahan khulega */}
+        <FormComponent />
         
       </div>
     </div>
